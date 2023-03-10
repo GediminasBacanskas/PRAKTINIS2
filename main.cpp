@@ -12,7 +12,7 @@ struct Aikstele{
 //------------------------------------FUNKCIJOS------------------------------------
 void Pildymas (int dydis, int automobilis, Aikstele & vieta, bool Tikrinimas,vector<Aikstele> & aikstele );
 void Isvedimas (vector<Aikstele> aikstele);
-void PagalMarke(vector<Aikstele> & aikstele, string & marke,int & k);
+void PagalMarke(vector<Aikstele> & aikstele, string & marke);
 void PagalMetus(vector<Aikstele> & aikstele, int & m);
 void PagalLitraza(vector<Aikstele> & aikstele,double & l);
 void RusiavimasPagalSkaiciu (vector<Aikstele> & aikstele);
@@ -28,6 +28,8 @@ int main() {
     vector<Aikstele> aikstele;
     Pildymas (dydis,automobilis,vieta,Tikrinimas,aikstele);
     Isvedimas (aikstele);
+    cout << vieta.marke;
+    int k = 0;
     int stop = 1;
     while (stop != 0) {
 
@@ -35,6 +37,8 @@ int main() {
         cout << "1. Paieska pagal marke" << endl;
         cout << "2. Paieska pagal metus" << endl;
         cout << "3. Paieska pagal litraza" << endl;
+        cout << "4. Rusiuoti aiksteles sarasa pagal metus didejimo tvarka" << endl;
+        cout << "5. Rusiuoti aiksteles sarasa pagal marke abeceles tvarka" << endl;
         cout << "0. Uzbaigti." << endl;
         cout << "-------------------------------------" << endl;
         cout << "Pasirinkite opcija: ";
@@ -47,33 +51,52 @@ int main() {
         }
         case 1: {
             string marke;
-            int k = 0;
             cout << " Iveskite marke mazosiomis raidemis" << endl;
             cin >> marke;
-            PagalMarke(aikstele, marke,k);
+            for (int i = 0; i < aikstele.size(); ++i) {
+                if(marke == aikstele[i].marke) k = 1;
+            }
+            if(k == 1) PagalMarke(aikstele,marke);
+            else cout << "Tokios markes automobilis nestovi aiksteleje " << endl;
             break;
         }
         case 2: {
             int m;
+            k = 0;
             cout << "Iveskite automobilio metus" << endl;
             cin >> m;
-            PagalMetus(aikstele,m);
+            for (int i = 0; i < aikstele.size(); ++i) {
+                if(m == aikstele[i].metai) k = 1;
+            }
+            if(k == 1) PagalMetus(aikstele,m);
+            else cout << "Tokiu metu automobilio nera musu aiksteleje " << endl;
             break;
         }
         case 3: {
             double l;
             cout << "Iveskite automobilio litraza (pvz 1.1) " << endl;
             cin >> l;
-            PagalLitraza(aikstele,l);
+            k = 0;
+            for (int i = 0; i < aikstele.size(); ++i) {
+                if(l == aikstele[i].litrazas) k = 1;
+            }
+            if(k == 1) PagalLitraza(aikstele,l);
+            else cout << "Tokio automobilio su jusu nurodytu litrazu nera musu aiksteleje " << endl;
+            break;
+        }
+        case 4: {
+            cout << "Rusiavimas pagal metus didejimo tvarka: " << endl;
+            RusiavimasPagalSkaiciu (aikstele);
+            Isvedimas (aikstele);
+            break;
+        }
+        case 5: {
+            cout << " Rusiavimas pagal markes pavadinima, abeceles tvarka: " << endl;
+            RusiavimasPagalAbecele (aikstele);
+            Isvedimas (aikstele);
         }
      }
     }
-    cout << "Rusiavimas pagal metus didejimo tvarka: " << endl;
-    RusiavimasPagalSkaiciu (aikstele);
-    Isvedimas (aikstele);
-    cout << " Rusiavimas pagal markes pavadinima, abeceles tvarka: " << endl;
-    RusiavimasPagalAbecele (aikstele);
-    Isvedimas (aikstele);
     return 0;
 }
 void Pildymas (int dydis, int  automobilis, Aikstele & vieta, bool Tikrinimas, vector<Aikstele> & aikstele){
@@ -108,14 +131,13 @@ void Isvedimas (vector<Aikstele> aikstele){
             cout << " litrazas - " << aikstele[i].litrazas << endl;
     }
 }
-void PagalMarke(vector<Aikstele> & aikstele, string & marke, int & k){
+void PagalMarke(vector<Aikstele> & aikstele, string & marke){
     for (int i = 0; i < aikstele.size(); ++i) {
         if(aikstele[i].marke == marke){
             cout << "Aiksteles numeris - " << aikstele[i].lokacija << " ";
             cout << "Automobilio marke -  " << aikstele[i].marke;
             cout << " metai - " << aikstele[i].metai;
             cout << " litrazas - " << aikstele[i].litrazas << endl;
-            k++;
         }
     }
 }
